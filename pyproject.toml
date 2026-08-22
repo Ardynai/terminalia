@@ -1,0 +1,17 @@
+[project]
+name = "terminalia"
+version = "0.1.0"
+description = "Agentic 3D open-world generation — terrain, layout, assets, placement, refinement"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "pillow",
+    "pydantic>=2",
+]
+
+[project.scripts]
+terminalia = "terminalia.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,70 @@
+{
+ "version": "0.1",
+ "spec": {
+  "prompt": "volcanic island with ruined temple and pirate cove",
+  "seed": 42,
+  "size_hectares": 100.0,
+  "biomes": [],
+  "points_of_interest": [],
+  "time_of_day": "dusk",
+  "style": "stylized realistic"
+ },
+ "terrain": {
+  "heightmap": "worlds/test-island/out/terrain/hm.png",
+  "regions": [
+   {
+    "name": "highlands",
+    "mask": "worlds/test-island/out/terrain/mask_highlands.png",
+    "biome": "highlands",
+    "color_hint": null
+   },
+   {
+    "name": "lowlands",
+    "mask": "worlds/test-island/out/terrain/mask_lowlands.png",
+    "biome": "lowlands",
+    "color_hint": null
+   },
+   {
+    "name": "coast",
+    "mask": "worlds/test-island/out/terrain/mask_coast.png",
+    "biome": "coast",
+    "color_hint": null
+   },
+   {
+    "name": "wilds",
+    "mask": "worlds/test-island/out/terrain/mask_wilds.png",
+    "biome": "wilds",
+    "color_hint": null
+   }
+  ],
+  "operators": [
+   "voronoi",
+   "radial_mask",
+   "fbm",
+   "mountains",
+   "raise",
+   "river",
+   "coast",
+   "normalize"
+  ],
+  "meters_per_pixel": 2.0,
+  "min_height_m": 0.0,
+  "max_height_m": 220.0
+ },
+ "layout": {
+  "composition_image": null,
+  "layout_map": null,
+  "objects": []
+ },
+ "assets": {},
+ "camera": {
+  "waypoints": []
+ },
+ "history": [
+  {
+   "stage": "terrain",
+   "at": "2026-08-22T22:12:38.608586+00:00",
+   "notes": "8 operators, 512px"
+  }
+ ]
+}

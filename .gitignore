@@ -1,0 +1,10 @@
+# .gitignore for Terminalia
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+worlds/*/out/
+assets/*/
+!assets/.gitkeep
+.next/
+node_modules/
