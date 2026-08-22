@@ -1,0 +1,34 @@
+# Decisions
+
+Standing decisions so they are not relitigated. Newest last.
+
+## D1 — world.json as the only state
+Every stage reads and writes one pydantic-validated file. No hidden state, no
+side-channel databases. Re-running a stage = delete its section and re-run.
+(2026-08-22)
+
+## D2 — Deterministic stages
+Same seed + same operator program = byte-identical heightmap and placement.
+Ambient randomness (wall clock, unseeded RNG) is banned inside stage code.
+(2026-08-22)
+
+## D3 — Backends are swappable abstractions
+Local ComfyUI, Comfy Cloud, RunPod, and custom HTTP endpoints all implement the
+same submit/wait/fetch interface (`terminalia.backends.Backend`). Stage code
+never knows which is active. Rationale: Josh's RTX 6000 / DGX Spark plans plus
+users without GPUs. (2026-08-22)
+
+## D4 — TRELLIS.2 over Hunyuan3D for assets
+MIT license vs community restrictions; equal-or-better quality in 2026
+roundups; already integrated in ComfyUI via Trellis2-GGUF with proven API wire
+format. (2026-08-22)
+
+## D5 — GpuProfile scaling instead of hardcoded 4090 presets
+Quality presets attach to named VRAM tiers; remote backends clamp to their own
+advertised hardware when queryable. Rationale: multi-hardware future (4090 now,
+RTX 6000 + DGX Spark planned) and cloud users. (2026-08-22)
+
+## D6 — Agent-authored operator programs for terrain
+Terrain is composed from a small op catalog executed deterministically rather
+than a single monolithic generator — mirrors WorldClaw's key trick, keeps
+terrain auditable and editable by both agents and humans. (2026-08-22)
