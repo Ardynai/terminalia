@@ -1,0 +1,27 @@
+{
+ "1": {
+  "class_type": "VHS_LoadVideo",
+  "inputs": {
+   "video": "input_video.mp4",
+   "force_rate": 2,
+   "custom_width": 0,
+   "custom_height": 0,
+   "frame_load_cap": 0,
+   "skip_first_frames": 0,
+   "select_every_nth": 1
+  },
+  "_meta": {
+   "title": "Load Video (2fps, all frames)"
+  }
+ },
+ "2": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "1",
+    0
+   ],
+   "filename_prefix": "frames/extract"
+  }
+ }
+}

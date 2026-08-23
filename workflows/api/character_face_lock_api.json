@@ -1,0 +1,50 @@
+{
+ "1": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "target_render.png"
+  },
+  "_meta": {
+   "title": "Target World Render"
+  }
+ },
+ "2": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "canonical_face.png"
+  },
+  "_meta": {
+   "title": "Canonical Character Face"
+  }
+ },
+ "3": {
+  "class_type": "ReActorFaceSwap",
+  "inputs": {
+   "source_image": [
+    "2",
+    0
+   ],
+   "input_image": [
+    "1",
+    0
+   ],
+   "swap_in_source_images": false,
+   "face_restore_model": "codeformer-v0.1.0.pth",
+   "face_restore_visibility": 1.0,
+   "face_restore_weight": 0.5
+  },
+  "_meta": {
+   "title": "Swap Canonical Face"
+  }
+ },
+ "4": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "3",
+    0
+   ],
+   "filename_prefix": "locked/char_lock"
+  }
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "1": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "keyframe_start.png"
+  },
+  "_meta": {
+   "title": "First frame (from Blender render)"
+  }
+ },
+ "8": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "keyframe_end.png"
+  },
+  "_meta": {
+   "title": "Last frame (optional FLF2V)"
+  }
+ }
+}
