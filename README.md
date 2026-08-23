@@ -117,3 +117,21 @@ exports are pure Python + numpy** and run on anything. Only the generative
 stages (concept images, meshes, video) need GPU acceleration — and those are
 backend-routed, so a MacBook user gets the full pipeline by pointing at
 Comfy Cloud or a rental box.
+
+## Consistency & editing stack (all installed)
+
+| Capability | Tool | Status |
+|---|---|---|
+| Face swap onto any render | ReActor (15 nodes) + CodeFormer restore | ✅ |
+| Identity-consistent generation | InstantID (+ insightface, onnxruntime) | ✅ |
+| Clean alpha cutouts | BiRefNet / RMBG matting | ✅ |
+| 4× upscaling | 4x-UltraSharp, 4x_NMKD-Siax | ✅ |
+| Style/character LoRA training | ai-toolkit (GUI at :8670, CLI configs in `config/examples/`) | ✅ |
+| Video → frames | VHS_LoadVideo → SaveImage | ✅ verified |
+| Semantic segmentation | SAM3 detect/track nodes | ✅ |
+
+LoRA workflow: train a world-style or character LoRA in ai-toolkit
+(`ui` GUI or `config/examples/train_lora_chroma_24gb.yaml` as template) →
+drop the `.safetensors` into `models/loras/` → load via `LoraLoaderModelOnly`
+in any Terminalia asset workflow. Deterministic seeds + pinned LoRAs =
+consistent style across every generation.
