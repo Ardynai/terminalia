@@ -56,3 +56,21 @@ Honest status markers: ✅ shipped · 🔨 in progress · 🧭 planned · 💡 i
 - Community world-template format (share seeds + op programs, not meshes)
 - DGX Spark multi-model residency: terrain+asset+video models hot simultaneously
 - Terminalia Server: thin web UI over the pipeline for non-technical creators
+
+## v0.7 — Agent control layer 🧭
+- [ ] **Terminalia MCP Server** — expose the whole pipeline as MCP tools
+      (generate_world, add_asset, place_object, export_ue/unity/godot,
+      render_flythrough) so any agent (Hermes, Claude, Cursor, OpenClaw) can
+      drive world generation conversationally without touching Python
+- [ ] Unity control bridge (research in progress: editor MCP plugin vs
+      batchmode CLI vs generated C# — see docs/how-it-works/unity.md when done)
+- [ ] OpenCut integration when upstream ships Editor API / headless mode
+- [ ] Claw3D bridge: live world preview via its WebSocket API
+
+## 💡 Ideas parking lot
+- Prompt → N candidate worlds → agent ranks and picks
+- Biome-aware UE landscape material/splatmap generation
+- Community world-template format (share seeds + op programs, not meshes)
+- DGX Spark multi-model residency: terrain+asset+video models hot simultaneously
+- Terminalia Server: thin web UI over the pipeline for non-technical creators
+- Unity Package (unitypackage) export format for one-click asset import
