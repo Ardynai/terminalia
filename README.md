@@ -102,3 +102,18 @@ MIT for Terminalia code. Generated content inherits upstream model licenses
 
 See [SECURITY.md](SECURITY.md) — workflow JSON and Blender MCP are code-execution
 surfaces; read before exposing anything beyond localhost.
+
+## Platform support
+
+| Platform | Status | Notes |
+|---|---|---|
+| Windows + NVIDIA | ✅ primary dev target | everything local |
+| Linux + NVIDIA | ✅ fully supported | ComfyUI local, same presets |
+| **Apple Silicon (M-series Mac)** | ✅ works via MPS | terrain/placement/export are pure Python — run anywhere. Generation stages route to a remote backend (Comfy Cloud/RunPod) or a LAN ComfyUI box; local MPS generation possible for some models but not TRELLIS.2 CUDA paths |
+| Any OS, no GPU | ✅ via cloud backends | terrain/placement/export are CPU-only; GPU stages route to cloud/rental |
+
+The pipeline is deliberately split: **terrain, layout, placement, and all
+exports are pure Python + numpy** and run on anything. Only the generative
+stages (concept images, meshes, video) need GPU acceleration — and those are
+backend-routed, so a MacBook user gets the full pipeline by pointing at
+Comfy Cloud or a rental box.

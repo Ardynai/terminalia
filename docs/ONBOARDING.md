@@ -83,3 +83,15 @@ python tests/test_smoke.py   # ALL TESTS PASS expected
 - Deterministic given seed — no ambient randomness in stages.
 - Backends via `terminalia.backends`; never hardcode URLs/ports.
 - Minimal-code discipline in `AGENTS.md` applies to every contribution.
+
+
+## Platform notes
+
+- **Windows / Linux (NVIDIA):** full local pipeline. Install CUDA-enabled
+  ComfyUI locally and you're done.
+- **Mac (Apple Silicon):** the CLI, terrain engine, placement, and all exports
+  run natively (pure Python + numpy). For generation stages, set
+  `COMFY_CLOUD_API_KEY` or point `TERMINALIA_COMFY_PORT` at a networked ComfyUI
+  box — backends.py handles the rest.
+- **No GPU at all:** everything still works via Comfy Cloud credits or a RunPod
+  serverless endpoint.
