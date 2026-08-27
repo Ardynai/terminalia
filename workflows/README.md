@@ -16,6 +16,14 @@ All templates were validated against Josh's live ComfyUI 0.27.x node set.
 | `upscale_4x_api.json` | 4× upscale of world renders | 4x-UltraSharp |
 | `flythrough_wan22_stub_api.json` | Keyframe inputs stub — pair with native Wan 2.2 I2V template | LoadImage |
 
+## Optional ComfyUI runtime references
+
+- [ComfyUI Sage EasyInstall](../docs/references/comfyui-sage-easyinstall.md) —
+  optional Windows-portable SageAttention/Triton installer for accelerating
+  compatible local ComfyUI runs. It does not contain a world-generation
+  workflow and is not part of Terminalia's deterministic world model. Use it as
+  a local runtime optimization only after same-seed A/B validation.
+
 ## Gotchas encoded in these templates
 
 1. **No top-level `_comment` strings** — crashes ComfyUI 0.27.x validation.
