@@ -30,3 +30,11 @@ threshold require a paid Commercial Use Agreement from
 ltxv-licensing@lightricks.com.
 
 No video model weights are redistributed with Terminalia.
+
+Video scene reconstruction
+--------------------------
+Terminalia can invoke SAM 2 (Apache License 2.0), TRELLIS.2-4B (MIT), and
+NVIDIA FoundationPose distributed through NGC (NVIDIA Open Model License).
+Weights and upstream source are not redistributed. SAM 2 and TRELLIS.2 are
+pinned for runtime retrieval; FoundationPose requires acceptance of NVIDIA's
+license and either an NGC API key or a locally downloaded NGC artifact.

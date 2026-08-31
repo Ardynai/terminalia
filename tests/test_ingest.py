@@ -21,8 +21,8 @@ class StubBackend:
         return str(len(self.workflows))
 
     def wait(self, prompt_id):
-        task = self.workflows[int(prompt_id) - 1]["terminalia_task"]
-        if task == "video_content_safety":
+        workflow = self.workflows[int(prompt_id) - 1]
+        if workflow.get("terminalia_task") == "video_content_safety":
             return {"terminalia_result": {
                 "safe": self.safe,
                 "model": {"name": "stub-safety", "version": "1.0",
@@ -63,8 +63,9 @@ def test_video_ingestion_builds_world_and_exports(tmp_path):
     assert world.video_provenance.source_sha256 == hashlib.sha256(video.read_bytes()).hexdigest()
     assert [model.version for model in world.video_provenance.models] == ["1.0"] * 3
     assert world.video_provenance.consent_note.startswith("Uploader confirms")
-    assert [job["terminalia_task"] for job in backend.workflows] == [
-        "video_content_safety", "video_scene_reconstruction"]
+    assert backend.workflows[0]["terminalia_task"] == "video_content_safety"
+    assert [node["class_type"] for node in backend.workflows[1].values()] == [
+        "TerminaliaSegmentVideo", "TerminaliaReconstructInstances"]
 
     mesh = tmp_path / "meshes" / "chair.glb"
     mesh.parent.mkdir()

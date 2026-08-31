@@ -18,9 +18,9 @@
 
 ## NEW INPUT PATH — Video → World (ingestion that feeds SPEC / world.json)
 **OVOW** ("One Video, One World") — monocular video → instance-level, simulation-ready 4D meshes + physics (URDF).
-- **ACTION: DESIGN THE "Video→World" STAGE NOW, and SPIKE it with the released models it's built from — do not idle-wait on OVOW itself.**
+- **ACTION: IMPLEMENTED** with commercially-clear substitutes: SAM 2 (Apache-2.0), TRELLIS.2-4B (MIT), and NVIDIA NGC FoundationPose (NVIDIA Open Model License).
 - **Why not integrate OVOW directly yet:** their glue code is "under internal review" (unreleased); no code to integrate.
-- **Why we don't just wait:** OVOW is a *pipeline over already-released models* (SAM3, Hi3DGen, FoundationPose, VGGT, RoMa v2, Qwen3-VL). Build "record a space → get a 3D world with physics" now from those parts.
+- **License boundary:** SAM 3 still needs legal review, Hi3DGen has no clearly licensed official checkpoint, and the non-commercial FoundationPose repository is excluded. The adapter uses only NVIDIA's separately distributed NGC artifact.
 - **Strategic value:** the engine behind the "record/scan your business → get a 3D space" onboarding funnel.
 - **Trigger to swap in OVOW's own implementation:** they release the code under a permissive license.
 
@@ -64,7 +64,7 @@ The honest home for **"DiffusionOPSD but for world generation."**
 
 ## Queued so nothing is forgotten
 1. **[SPIKED] REFINE:** `fix_anything` refiner sub-stage (Apache-2.0; 32GB+/cloud GpuProfiles).
-2. **[SPIKE] INGEST:** "Video→World" stage from SAM3 + Hi3DGen + FoundationPose (OVOW-equivalent, no wait).
+2. **[IMPLEMENTED] INGEST:** SAM 2 → TRELLIS.2 → NVIDIA NGC FoundationPose, with deterministic mock execution and explicit founder gate.
 3. **[BUILD] EXPORT:** our own "image→live three.js scene" web target (the img2threejs *look*, not the service) + a splat/lightweight-web export for landing-playable worlds.
 4. **[INTEGRATE] VOICE:** Gemini 3.5 Transcribe STT module (voice chat / commands / captions).
 5. **[STUDY] SPEC:** fold code-world-model's compact-conditions→deterministic-code pattern into the agent SPEC layer.
