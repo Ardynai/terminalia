@@ -14,7 +14,8 @@ All templates were validated against Josh's live ComfyUI 0.27.x node set.
 | `identity_consistency_instantid_api.json` | Identity-consistent generations from one ref image | InstantID |
 | `background_removal_birefnet_api.json` | Clean alpha cutouts for mesh input | BiRefNetRMBG / RMBG |
 | `upscale_4x_api.json` | 4× upscale of world renders | 4x-UltraSharp |
-| `flythrough_wan22_stub_api.json` | Keyframe inputs stub — pair with native Wan 2.2 I2V template | LoadImage |
+| `flythrough_wan21_api.json` | Wan2.1 480P image-to-video flythrough | WanImageToVideo, KSampler, VHS_VideoCombine |
+| `flythrough_ltx2_api.json` | Attestation-gated LTX-2 image-to-video flythrough | LTXVConditioning, LTXVImgToVideo, VHS_VideoCombine |
 
 ## Optional ComfyUI runtime references
 
@@ -38,3 +39,4 @@ All templates were validated against Josh's live ComfyUI 0.27.x node set.
 - ComfyUI_InstantID ✓ installed (+ insightface, onnxruntime)
 - ComfyUI-RMBG (BiRefNet) ✓ installed
 - ComfyUI-Trellis2-GGUF ✓ installed
+- ComfyUI-GGUF (for quantized video profiles)

@@ -9,12 +9,24 @@ Source: https://github.com/kvuong2711/fix-anything
 Model: https://huggingface.co/kvuong2711/fix-anything
 License: Apache License 2.0
 
-Wan2.1-I2V-14B-480P
---------------------
+The integration pins both the FixAnything LoRA and Wan2.1 base-model revisions.
+Neither model weights nor FixAnything source code are redistributed here;
+the configured compute backend fetches them at runtime.
+
+Wan2.1
+------
+Terminalia can invoke Wan2.1-I2V-14B-480P at runtime for flythrough video.
 Authors: Wan Team, Alibaba Group
 Source and model: https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-480P
 License: Apache License 2.0
 
-The integration pins both the FixAnything LoRA and Wan2.1 base-model revisions.
-Both are Apache-2.0. Neither model's weights nor upstream source code are
-redistributed here; the configured compute backend fetches them at runtime.
+LTX-Video 2
+-----------
+Terminalia can invoke LTX-Video 2 at runtime for flythrough video.
+Source: https://github.com/Lightricks/LTX-Video
+License: Lightricks LTX-Video Community License. Commercial use is free only
+for entities under USD $10 million annual revenue. Entities at or above that
+threshold require a paid Commercial Use Agreement from
+ltxv-licensing@lightricks.com.
+
+No video model weights are redistributed with Terminalia.

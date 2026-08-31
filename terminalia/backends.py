@@ -30,7 +30,7 @@ class GpuProfile:
     mesh_steps: tuple[int, int, int]
     use_tiled_decoder: bool = True
     low_vram: bool = True
-    video_engine: str = "wan22"
+    video_engine: str = "wan21"
     video_quant: str = "Q4_K_M"
 
 

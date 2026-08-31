@@ -1,0 +1,13 @@
+{
+ "1": {"class_type": "LoadImage", "inputs": {"image": "keyframe.png"}},
+ "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "ltx-video-2-19b-dev-fp16.safetensors", "weight_dtype": "default"}},
+ "3": {"class_type": "CLIPLoader", "inputs": {"clip_name": "gemma_3_12B_it_fp8_scaled.safetensors", "type": "ltxv", "device": "default"}},
+ "4": {"class_type": "VAELoader", "inputs": {"vae_name": "ltx-2-19b-dev-vae.safetensors"}},
+ "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["3", 0], "text": "cinematic smooth camera flythrough, stable world geometry"}},
+ "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["3", 0], "text": "camera shake, cuts, warped geometry, flicker"}},
+ "7": {"class_type": "LTXVConditioning", "inputs": {"positive": ["5", 0], "negative": ["6", 0], "frame_rate": 25.0}},
+ "8": {"class_type": "LTXVImgToVideo", "inputs": {"positive": ["7", 0], "negative": ["7", 1], "vae": ["4", 0], "image": ["1", 0], "width": 768, "height": 512, "length": 97, "batch_size": 1, "strength": 1.0}},
+ "9": {"class_type": "KSampler", "inputs": {"model": ["2", 0], "positive": ["8", 0], "negative": ["8", 1], "latent_image": ["8", 2], "seed": 42, "steps": 30, "cfg": 3.0, "sampler_name": "euler", "scheduler": "normal", "denoise": 1.0}},
+ "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["4", 0]}},
+ "11": {"class_type": "VHS_VideoCombine", "inputs": {"images": ["10", 0], "frame_rate": 25, "loop_count": 0, "filename_prefix": "video/terminalia_ltx2", "format": "video/h264-mp4", "pingpong": false, "save_output": true}}
+}

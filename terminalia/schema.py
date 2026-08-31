@@ -77,9 +77,14 @@ class ModelRef(BaseModel):
 
 
 class VideoProvenance(BaseModel):
-    source_sha256: str
-    consent_note: str
+    source_sha256: str = ""
+    consent_note: str = ""
     models: list[ModelRef]
+    engine: str | None = None
+    seed: int | None = None
+    backend: str | None = None
+    profile: str | None = None
+    artifacts: list["ArtifactRef"] = Field(default_factory=list)
 
 
 class CameraPath(BaseModel):
@@ -114,7 +119,7 @@ class Refinement(BaseModel):
 
 
 class World(BaseModel):
-    version: str = "0.2"
+    version: str = "0.3"
     spec: WorldSpec
     terrain: Terrain | None = None
     layout: Layout = Field(default_factory=Layout)
