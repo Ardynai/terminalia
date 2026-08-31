@@ -23,6 +23,7 @@ docs/                  architecture, how-it-works, onboarding, roadmap
 skills/                agent skill definitions per stage (see docs/skills.md)
 tests/                 smoke tests
 workflows/             ComfyUI workflow templates used by assets.py
+custom_nodes/          ComfyUI runtime nodes (TerminaliaFixAnything)
 ```
 
 ## The two most important flows
