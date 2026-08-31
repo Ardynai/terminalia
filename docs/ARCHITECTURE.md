@@ -13,6 +13,7 @@ terminalia/            python package
 ├── layout.py          flat-area scoring, region-masked site selection
 ├── assets.py          concept image → TRELLIS.2 PBR GLB via ComfyUI
 ├── place.py           contact-ratio placement search + collision pass
+├── refine.py          optional render cleanup via FixAnything
 ├── backends.py        compute routing: local / Comfy Cloud / RunPod / custom
 ├── video.py           flythroughs, character lock, face swap, repo integrations
 ├── export.py          UE / Unity / Godot / glTF writers
@@ -34,7 +35,9 @@ graph LR
     C --> D[layout: sites from flatness+regions]
     D --> E[assets: concept → TRELLIS.2 GLB]
     E --> F[place: contact search + collision]
-    F --> G[world.json saved]
+    F --> G[refine: optional runtime cleanup]
+    G --> H[export]
+    H --> I[world.json saved]
 ```
 
 Each stage writes its section of `world.json`. Any stage can be re-run:

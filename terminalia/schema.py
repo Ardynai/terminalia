@@ -66,13 +66,35 @@ class HistoryEntry(BaseModel):
     notes: str = ""
 
 
+class ArtifactRef(BaseModel):
+    uri: str
+    kind: Literal["frames", "video", "mesh_render"]
+
+
+class FixAnythingPass(BaseModel):
+    status: Literal["ran", "skipped"]
+    inputs: list[ArtifactRef] = Field(default_factory=list)
+    outputs: list[ArtifactRef] = Field(default_factory=list)
+    seed: int
+    backend: str
+    profile: str
+    weights: dict[str, str] = Field(default_factory=dict)
+    reason: str | None = None
+
+
+class Refinement(BaseModel):
+    render_artifacts: list[ArtifactRef] = Field(default_factory=list)
+    fix_anything: FixAnythingPass | None = None
+
+
 class World(BaseModel):
-    version: str = "0.1"
+    version: str = "0.2"
     spec: WorldSpec
     terrain: Terrain | None = None
     layout: Layout = Field(default_factory=Layout)
     assets: dict[str, AssetEntry] = Field(default_factory=dict)
     camera: CameraPath = Field(default_factory=CameraPath)
+    refine: Refinement = Field(default_factory=Refinement)
     history: list[HistoryEntry] = Field(default_factory=list)
 
     def save(self, path: str) -> None:

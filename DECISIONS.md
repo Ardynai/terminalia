@@ -32,3 +32,10 @@ RTX 6000 + DGX Spark planned) and cloud users. (2026-08-22)
 Terrain is composed from a small op catalog executed deterministically rather
 than a single monolithic generator — mirrors WorldClaw's key trick, keeps
 terrain auditable and editable by both agents and humans. (2026-08-22)
+
+## D7 — Refinement artifacts and provenance belong in world.json
+Optional runtime refinement records typed render inputs, outputs, decisions,
+backend/profile selection, seed, and pinned model revisions in `World.refine`.
+This keeps skipped passes auditable and prevents render paths or model versions
+from becoming side-channel state. The schema contract moves from 0.1 to 0.2.
+(2026-08-30)

@@ -12,7 +12,7 @@
 
 ## REFINE stage (render-inspect-refine) — today: BlenderMCP loop
 **fix-anything** — runtime artifact cleanup on generated 3D (3DGS / NeRF / mesh / point cloud) via a video-diffusion model.
-- **ACTION: SPIKE NOW** as a REFINE sub-stage (a `fix_anything` refiner that runs on ASSETS/render output before EXPORT).
+- **ACTION: SPIKED** as an optional, backend-routed REFINE sub-stage with deterministic profile gating and `world.json` provenance.
 - **Why now:** Apache-2.0 (usable), directly lifts output quality, runs on the same compute backends. Cost: needs Wan2.1-I2V-14B (~60GB) → fits the 32GB+/128GB GpuProfiles or Comfy-Cloud/RunPod.
 - **Note:** fix-anything is **runtime** cleanup — NOT a training tool. (Contrast DiffusionOPSD below, which IS training.)
 
@@ -63,7 +63,7 @@ The honest home for **"DiffusionOPSD but for world generation."**
 ---
 
 ## Queued so nothing is forgotten
-1. **[SPIKE] REFINE:** `fix_anything` refiner sub-stage (Apache-2.0; 32GB+/cloud GpuProfiles).
+1. **[SPIKED] REFINE:** `fix_anything` refiner sub-stage (Apache-2.0; 32GB+/cloud GpuProfiles).
 2. **[SPIKE] INGEST:** "Video→World" stage from SAM3 + Hi3DGen + FoundationPose (OVOW-equivalent, no wait).
 3. **[BUILD] EXPORT:** our own "image→live three.js scene" web target (the img2threejs *look*, not the service) + a splat/lightweight-web export for landing-playable worlds.
 4. **[INTEGRATE] VOICE:** Gemini 3.5 Transcribe STT module (voice chat / commands / captions).
