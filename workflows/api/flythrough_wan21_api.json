@@ -1,0 +1,14 @@
+{
+ "1": {"class_type": "LoadImage", "inputs": {"image": "keyframe.png"}},
+ "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "wan2.1_i2v_480p_14B_fp16.safetensors", "weight_dtype": "default"}},
+ "3": {"class_type": "CLIPLoader", "inputs": {"clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors", "type": "wan", "device": "default"}},
+ "4": {"class_type": "VAELoader", "inputs": {"vae_name": "wan_2.1_vae.safetensors"}},
+ "5": {"class_type": "CLIPVisionLoader", "inputs": {"clip_name": "clip_vision_h.safetensors"}},
+ "6": {"class_type": "CLIPVisionEncode", "inputs": {"clip_vision": ["5", 0], "image": ["1", 0], "crop": "none"}},
+ "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["3", 0], "text": "cinematic smooth camera flythrough, stable world geometry"}},
+ "8": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["3", 0], "text": "camera shake, cuts, warped geometry, flicker"}},
+ "12": {"class_type": "WanImageToVideo", "inputs": {"positive": ["7", 0], "negative": ["8", 0], "vae": ["4", 0], "clip_vision_output": ["6", 0], "start_image": ["1", 0], "width": 832, "height": 480, "length": 81, "batch_size": 1}},
+ "9": {"class_type": "KSampler", "inputs": {"model": ["2", 0], "positive": ["12", 0], "negative": ["12", 1], "latent_image": ["12", 2], "seed": 42, "steps": 20, "cfg": 6.0, "sampler_name": "uni_pc", "scheduler": "simple", "denoise": 1.0}},
+ "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["4", 0]}},
+ "11": {"class_type": "VHS_VideoCombine", "inputs": {"images": ["10", 0], "frame_rate": 16, "loop_count": 0, "filename_prefix": "video/terminalia_wan21", "format": "video/h264-mp4", "pingpong": false, "save_output": true}}
+}

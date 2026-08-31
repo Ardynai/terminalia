@@ -1,7 +1,7 @@
 """Terminalia video stage — flythroughs, character lock, consistency.
 
 Integrations:
-- Wan2GP / ComfyUI (Wan 2.2, LTX-2): world flythrough I2V from camera-key renders
+- ComfyUI (Wan2.1, LTX-2): world flythrough I2V from camera-key renders
 - ReActor (installed in ComfyUI): face swap onto characters
 - Qwen-Image-Edit / Flux Kontext (ComfyUI): character sheet consistency
 - OmniDirector-style camera cloning: reference clip → camera path
@@ -9,8 +9,12 @@ Integrations:
 from __future__ import annotations
 
 import json
+import os
+from pathlib import Path
 
-COMFY = "http://127.0.0.1:8000"
+from .backends import Backend, GPU_PROFILES, GpuProfile
+from .refine import FIX_ANYTHING_WEIGHTS
+from .schema import ArtifactRef, HistoryEntry, ModelRef, VideoProvenance, World
 
 
 # ------------------------------------------------------- camera keyframes ---
@@ -78,29 +82,85 @@ def face_swap_workflow(source_face: str, target_frame: str) -> dict:
 
 # ------------------------------------------------------------ flythrough ----
 
-def flythrough_workflow(world_dir: str, keyframe_images: list[str],
-                        engine: str = "wan22") -> dict:
-    """Keyframe renders → video. Wan2.2 I2V (ComfyUI native) or LTX-2.
+class LicenseAttestationRequired(RuntimeError):
+    """Raised when a conditionally licensed model was not attested."""
 
-    keyframe_images: ordered stills rendered from Blender at camera keys.
-    """
-    if engine == "wan22":
-        return {
-            "engine": "wan22-i2v",
-            "note": "Use ComfyUI native Wan2.2 I2V template; feed keyframe 1 "
-                    "as start image; FLF2V variant accepts last keyframe too",
-            "first_frame": keyframe_images[0] if keyframe_images else None,
-            "last_frame": keyframe_images[-1] if len(keyframe_images) > 1 else None,
-            "recommended": "Wan2.2-I2V-A14B-GGUF Q4_K_M (fits 24GB)",
-        }
-    if engine == "ltx2":
-        return {
-            "engine": "ltx2",
-            "note": "LTX-2.5 GGUF Q6_K; keyframes as conditioning frames; "
-                    "audio+video joint generation",
-            "frames": keyframe_images,
-        }
-    raise ValueError(f"unknown engine: {engine}")
+
+WAN21_MODEL = ModelRef(
+    name="Wan2.1-I2V-14B-480P",
+    version=FIX_ANYTHING_WEIGHTS["base"].rsplit("@", 1)[1],
+    license="Apache-2.0",
+)
+LTX2_LICENSE = (
+    "Lightricks LTX-Video Community License; commercial use permitted for "
+    "entities under USD $10M annual revenue; paid Commercial Use Agreement "
+    "required at or above USD $10M annual revenue"
+)
+LTX2_MODEL = ModelRef(name="LTX-Video-2", version="2.0", license=LTX2_LICENSE)
+_TEMPLATES = Path(__file__).parent.parent / "workflows" / "api"
+
+
+def _model_filename(engine: str, quant: str) -> str:
+    if engine == "wan21":
+        return (f"wan2.1_i2v_480p_14B_{quant}.safetensors"
+                if quant in {"fp16", "bf16"} else
+                f"wan2.1-i2v-14b-480p-{quant}.gguf")
+    return (f"ltx-video-2-19b-dev-{quant}.safetensors"
+            if quant in {"fp16", "bf16"} else
+            f"ltx-video-2-19b-dev-{quant}.gguf")
+
+
+def flythrough_workflow(keyframe_images: list[str], engine: str = "wan21",
+                        profile: GpuProfile | None = None, seed: int = 42) -> dict:
+    """Build a deterministic ComfyUI API prompt from ordered camera renders."""
+    if not keyframe_images:
+        raise ValueError("at least one keyframe image is required")
+    if engine not in {"wan21", "ltx2"}:
+        raise ValueError(f"unknown engine: {engine}")
+    if engine == "ltx2" and os.environ.get("TERMINALIA_LTX_OK_UNDER_10M") != "1":
+        raise LicenseAttestationRequired(
+            "LTX-2 requires TERMINALIA_LTX_OK_UNDER_10M=1 to attest that the "
+            "using entity has under USD $10M annual revenue; otherwise obtain "
+            "a Commercial Use Agreement from ltxv-licensing@lightricks.com")
+
+    profile = profile or GPU_PROFILES["rtx-4090-24gb"]
+    with open(_TEMPLATES / f"flythrough_{engine}_api.json") as f:
+        workflow = json.load(f)
+    workflow["1"]["inputs"]["image"] = keyframe_images[0]
+    workflow["2"]["inputs"]["unet_name"] = _model_filename(engine, profile.video_quant)
+    if profile.video_quant not in {"fp16", "bf16"}:
+        workflow["2"]["class_type"] = "UnetLoaderGGUF"
+    workflow["9"]["inputs"]["seed"] = seed
+    workflow["11"]["inputs"]["filename_prefix"] = f"video/terminalia_{engine}_{seed}"
+    return workflow
+
+
+def _video_artifacts(backend: Backend, outputs: dict) -> list[ArtifactRef]:
+    artifacts = []
+    for node in sorted(outputs):
+        for item in outputs[node].get("videos", []):
+            artifacts.append(ArtifactRef(
+                uri=backend.fetch_file_url(item["filename"], item.get("subfolder", "")),
+                kind="video"))
+    if not artifacts:
+        raise RuntimeError("flythrough backend returned no video artifact")
+    return artifacts
+
+
+def flythrough(world: World, keyframe_images: list[str], backend: Backend,
+               profile: GpuProfile, engine: str | None = None) -> World:
+    """Execute a flythrough and record its output and provenance in ``world``."""
+    engine = engine or profile.video_engine
+    workflow = flythrough_workflow(keyframe_images, engine, profile, world.spec.seed)
+    prompt_id = backend.submit(workflow, client_id=f"terminalia-flythrough-{world.spec.seed}")
+    artifacts = _video_artifacts(backend, backend.wait(prompt_id))
+    model = WAN21_MODEL if engine == "wan21" else LTX2_MODEL
+    world.video_provenance = VideoProvenance(
+        models=[model], engine=engine, seed=world.spec.seed, backend=backend.name,
+        profile=profile.name, artifacts=artifacts)
+    world.history.append(HistoryEntry(
+        stage="video.flythrough", at="", notes=f"{engine}; seed={world.spec.seed}"))
+    return world
 
 
 # ------------------------------------------------------------ repo bridges --

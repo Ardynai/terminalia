@@ -89,10 +89,10 @@ full decode) → 128GB (max steps, bf16 video). See
 ## Status & honesty
 
 `v0.2` — terrain engine, placement search, asset bindings, layout selection,
-engine exporters, video-stage specs, and the optional FixAnything refinement
-adapter are implemented and smoke-tested. The Blender refine loop and real
-Wan/FixAnything/LTX model execution are not end-to-end tested in-repo. The
-README will always say exactly this much.
+engine exporters, backend-routed Wan2.1/LTX-2 flythrough execution, and the
+optional FixAnything refinement adapter are implemented and stub-backend
+tested. The Blender refine loop and heavyweight Wan/FixAnything/LTX inference
+are not run in CI. The README will always say exactly this much.
 
 ## License
 

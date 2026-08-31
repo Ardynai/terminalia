@@ -39,3 +39,10 @@ backend/profile selection, seed, and pinned model revisions in `World.refine`.
 This keeps skipped passes auditable and prevents render paths or model versions
 from becoming side-channel state. The schema contract moves from 0.1 to 0.2.
 (2026-08-30)
+
+## D8 — Flythrough execution and provenance belong in world.json
+VIDEO submits profile-filled ComfyUI templates through the swappable backend
+contract. The selected engine, pinned model and license, seed, backend/profile,
+and returned video artifacts are recorded in `World.video_provenance`; LTX-2 is
+fail-closed behind its revenue attestation. The schema contract moves from 0.2
+to 0.3. (2026-08-31)
