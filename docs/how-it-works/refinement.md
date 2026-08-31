@@ -29,3 +29,28 @@ The integration pins the Apache-2.0 FixAnything LoRA and its Apache-2.0
 Wan2.1-I2V-14B-480P base by Hugging Face commit. These total roughly 60 GB and
 are fetched by the configured runtime, never stored in this repository. See
 the root `NOTICE` for attribution.
+
+## Running the node
+
+Copy or symlink `custom_nodes/terminalia_fixanything` into the ComfyUI
+`custom_nodes/` directory, install the upstream FixAnything package and its
+pinned DiffSynth dependency in ComfyUI's Python environment, then restart
+ComfyUI. `huggingface_hub` is also required. On first real execution the node
+downloads the commit-pinned base model and LoRA under
+`ComfyUI/models/terminalia/fixanything`; set `HF_TOKEN` if Hugging Face requires
+authentication. A failed or unavailable download raises before inference and
+does not replace the input or report an output.
+
+Real mode is the default. It uses bf16 weights, tiled decoding, and upstream
+sequential CPU/GPU VRAM management so the 480P pipeline fits a 32 GB card. The
+input must contain at least 61 frames. Set `TERMINALIA_FIXANYTHING_MOCK=1`, or
+send the optional node input `mock: true`, to run a lightweight ffmpeg
+denoise/sharpen/re-encode smoke path without importing GPU packages or fetching
+weights.
+
+For a fixed input, seed, pinned weights, dependency/CUDA versions, and GPU, the
+real node seeds Python, NumPy, Torch, CUDA, and the sampler and requires
+deterministic Torch algorithms. It uses no wall-clock or temporal randomness.
+GPU/kernel and codec differences mean byte identity is not promised across
+hardware or software stacks. Mock output is byte-identical when the same ffmpeg
+build is used.
