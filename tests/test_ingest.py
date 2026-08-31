@@ -9,6 +9,11 @@ from terminalia.ingest import UnsafeVideoError, ingest_video
 from terminalia.schema import World
 
 
+@pytest.fixture(autouse=True)
+def _explicit_test_safety(monkeypatch):
+    monkeypatch.setenv("TERMINALIA_SAFETY_MOCK", "1")
+
+
 class StubBackend:
     name = "stub"
 
@@ -25,8 +30,8 @@ class StubBackend:
         if workflow.get("terminalia_task") == "video_content_safety":
             return {"terminalia_result": {
                 "safe": self.safe,
-                "model": {"name": "stub-safety", "version": "1.0",
-                          "license": "test-only"},
+                "model": {"name": "omni-moderation-latest", "version": "latest",
+                          "license": "OpenAI Services Agreement and Usage Policies"},
             }}
         return {"terminalia_result": {
             "models": [
@@ -61,7 +66,7 @@ def test_video_ingestion_builds_world_and_exports(tmp_path):
     assert len(world.layout.objects) == 1
     assert world.layout.objects[0].poses[0].translation == (1, 2, 3)
     assert world.video_provenance.source_sha256 == hashlib.sha256(video.read_bytes()).hexdigest()
-    assert [model.version for model in world.video_provenance.models] == ["1.0"] * 3
+    assert [model.version for model in world.video_provenance.models] == ["latest", "1.0", "1.0"]
     assert world.video_provenance.consent_note.startswith("Uploader confirms")
     assert backend.workflows[0]["terminalia_task"] == "video_content_safety"
     assert [node["class_type"] for node in backend.workflows[1].values()] == [

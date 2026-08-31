@@ -93,6 +93,8 @@ engine exporters, backend-routed Wan2.1/LTX-2 flythrough execution, the commerci
 video reconstruction adapter, and the optional FixAnything refinement adapter are
 implemented and stub-backend tested. The Blender refine loop and real
 Wan/FixAnything/LTX/reconstruction model execution are not end-to-end tested in-repo.
+The video-ingestion safety gate is wired to real OpenAI and NVIDIA multimodal
+moderation paths and rejects every video until one is explicitly configured.
 The README will always say exactly this much.
 
 ## License
