@@ -31,10 +31,16 @@ ltxv-licensing@lightricks.com.
 
 No video model weights are redistributed with Terminalia.
 
-Video scene reconstruction
---------------------------
-Terminalia can invoke SAM 2 (Apache License 2.0), TRELLIS.2-4B (MIT), and
-NVIDIA FoundationPose distributed through NGC (NVIDIA Open Model License).
-Weights and upstream source are not redistributed. SAM 2 and TRELLIS.2 are
-pinned for runtime retrieval; FoundationPose requires acceptance of NVIDIA's
-license and either an NGC API key or a locally downloaded NGC artifact.
+OpenAI omni-moderation-latest
+-----------------------------
+Terminalia can call OpenAI's hosted moderation API at runtime. It is governed
+by the OpenAI Services Agreement and Usage Policies. No OpenAI model or service
+code is redistributed here.
+
+NVIDIA Nemotron 3.5 Content Safety
+----------------------------------
+Terminalia can call or locally deploy NVIDIA's multimodal content-safety model.
+Model weights are governed by OpenMDW License Agreement 1.1, Gemma Terms of
+Use, and the Gemma Prohibited Use Policy. NVIDIA NIM use is also governed by
+the NVIDIA Software License Agreement and Product-Specific Terms for AI
+Products. No model weights or NIM container components are redistributed here.

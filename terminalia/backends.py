@@ -95,7 +95,13 @@ class Backend:
             return False
 
     def submit(self, workflow: dict, client_id: str = "terminalia") -> str:
-        body = {"prompt": workflow, "client_id": client_id}
+        prompt = workflow
+        if workflow.get("terminalia_task") == "video_content_safety":
+            prompt = {"1": {"class_type": "TerminaliaContentSafety", "inputs": {
+                "video_path": workflow["video_path"],
+                "source_sha256": workflow["source_sha256"],
+            }}}
+        body = {"prompt": prompt, "client_id": client_id}
         if "runpod" in self.name:
             # RunPod serverless wraps the payload
             body = {"input": body}

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .backends import Backend, GpuProfile
 from .reconstruction import build_reconstruction_workflow
+from .safety import configured_backend, has_real_provenance
 from .schema import (
     AssetEntry, InstancePose, ModelRef, Physics, PlacedObject, VideoProvenance,
     World, WorldSpec,
@@ -45,6 +46,7 @@ def ingest_video(request: dict, backend: Backend, profile: GpuProfile) -> dict:
     ``terminalia_result`` mapping. Safety is a separate first job so a rejected
     input cannot reach scene reconstruction.
     """
+    configured_backend()  # reject-all until a real provider (or explicit test mock) exists
     path = Path(request["video_path"])
     if not path.is_file():
         raise ValueError("video_path must be an existing file")
@@ -66,9 +68,11 @@ def ingest_video(request: dict, backend: Backend, profile: GpuProfile) -> dict:
     if safety.get("safe") is not True:
         raise UnsafeVideoError("video rejected by content-safety gate")
     try:
+        if not has_real_provenance(safety["model"]):
+            raise ValueError("unrecognized safety model")
         safety_model = ModelRef.model_validate(safety["model"])
     except Exception as exc:
-        raise RuntimeError("safety verdict omitted valid model provenance") from exc
+        raise UnsafeVideoError("safety verdict omitted valid model provenance") from exc
 
     scene_request = {
         "video_path": str(path),

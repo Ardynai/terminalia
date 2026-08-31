@@ -24,7 +24,10 @@ Terminalia executes:
    against a local Blender instance you accept code being executed in. The addon
    socket (9876) has no auth — never expose it beyond localhost.
 3. **API keys** live in environment variables (`COMFY_CLOUD_API_KEY`,
-   `RUNPOD_API_KEY`). Never commit them; never log full backend headers.
+   `RUNPOD_API_KEY`, `OPENAI_API_KEY`, `NVIDIA_API_KEY`). Never commit them;
+   never log full backend headers. Video ingestion rejects all inputs unless a
+   real safety provider is configured; `TERMINALIA_SAFETY_MOCK=1` is test-only
+   and must never be enabled in production.
 4. **Generated content licenses** flow from upstream models — verify before
    commercial redistribution.
 

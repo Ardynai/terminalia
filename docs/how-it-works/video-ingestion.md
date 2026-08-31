@@ -50,6 +50,28 @@ because no clearly licensed official checkpoint was identified.
 
 ## Determinism and provenance
 
-Source bytes are SHA-256 hashed. Seed, hash, backend profile, pinned model
-versions, exact license strings, and uploader consent are carried through the
-jobs and `world.json`. The stage uses no clock or ambient randomness.
+Raw source bytes are SHA-256 hashed. The caller's seed, hash, backend profile,
+model names, versions, licenses, and uploader consent note are recorded or sent
+with each job. The stage uses no clock or ambient randomness.
+
+The preceding safety-model implementation STOP is resolved by the real,
+fail-closed dual provider gate described in [safety-gate.md](safety-gate.md).
+
+## License and implementation STOPs
+
+- SAM 3 is released under Meta's custom SAM License, which has no blanket
+  noncommercial restriction but requires product/legal compliance review.
+- Hi3DGen source is MIT, but an official pretrained checkpoint with a clearly
+  documented weights license was not identified. No Hi3DGen weights are wired.
+- The NVlabs FoundationPose repository license restricts it to noncommercial
+  use. It is not wired. NVIDIA's separate commercial NGC artifact requires
+  accepting and reviewing NVIDIA terms before an adapter can be added.
+- NVIDIA Nemotron 3.5 Content Safety is wired as the local multimodal adapter,
+  but remains disabled until its OpenMDW/Gemma/NIM terms are accepted and the
+  deployment environment is configured. No weights are shipped here.
+
+Official references: [SAM 3](https://github.com/facebookresearch/sam3),
+[Hi3DGen](https://github.com/bytedance/Hi3DGen),
+[FoundationPose license](https://github.com/NVlabs/FoundationPose/blob/main/LICENSE),
+[NVIDIA FoundationPose](https://catalog.ngc.nvidia.com/orgs/nvidia/tao/models/foundationpose/),
+and [Nemotron 3.5 Content Safety](https://build.nvidia.com/nvidia/nemotron-3.5-content-safety/modelcard).
