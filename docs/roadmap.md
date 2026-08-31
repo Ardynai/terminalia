@@ -57,6 +57,28 @@ Honest status markers: ✅ shipped · 🔨 in progress · 🧭 planned · 💡 i
 - DGX Spark multi-model residency: terrain+asset+video models hot simultaneously
 - Terminalia Server: thin web UI over the pipeline for non-technical creators
 
+## v0.7 — parked plans (2026-08-31 final pass) 🧭
+Josh is parking active build. Every remaining item is committed as a plan doc
+**co-located in the folder that will do the work**; nothing is forgotten. Index:
+
+| Plan | Area | Starts when |
+|---|---|---|
+| [`terminalia/integrations/fabric-sidecar.plan.md`](../terminalia/integrations/fabric-sidecar.plan.md) | fabric integration (HTTP-only, fail-closed, no private imports) | transport-d URL+token provisioned |
+| [`terminalia/schema-evolution.plan.md`](../terminalia/schema-evolution.plan.md) | world.json evolution per stage | fires with each stage PR |
+| [`docs/how-it-works/refine-blender-loop.plan.md`](how-it-works/refine-blender-loop.plan.md) | BlenderMCP place→refine→re-render loop | real-weights E2E unblocked |
+| [`docs/how-it-works/backends-compute.plan.md`](how-it-works/backends-compute.plan.md) | real Comfy Cloud / RunPod E2E, more GpuProfiles, cost estimator | credits/keys |
+| [`docs/how-it-works/flythrough.ltx2-commercial.plan.md`](how-it-works/flythrough.ltx2-commercial.plan.md) | LTX-2 license path (attestation → paid CUA at $10M ARR) | ARR trigger |
+| [`tests/real-weights-e2e.plan.md`](../tests/real-weights-e2e.plan.md) | real-weights E2E (fix_anything + safety) | founder actions |
+| [`docs/founder-activation-runbook.plan.md`](founder-activation-runbook.plan.md) | exact steps to flip gated models | Josh's decision |
+| [`docs/tool-integration-build-tickets.plan.md`](tool-integration-build-tickets.plan.md) | splat gallery · img2threejs-look · Gemini STT · OVOW/code-world-model/Block3D slots · DiffusionOPSD v2 track | per-ticket triggers |
+| [`docs/naming-collision.plan.md`](naming-collision.plan.md) | terminalia engine vs "Terminalia" multiverse rebrand | Josh decides |
+
+Open PRs awaiting merge (Planner corroboration at each SHA): #4 fix_anything
+node (`13806d5`) · #5 flythrough (`587d9f7`) · #6 scene reconstruction
+(`7efe7a3`) · #7 real safety gate (`a75d168`). Child-safety posture until a
+real moderation backend + key exists: the gate stays HARD fail-closed (reject
+all video) — by design.
+
 ## v0.7 — Agent control layer 🧭
 - [ ] **Terminalia MCP Server** — expose the whole pipeline as MCP tools
       (generate_world, add_asset, place_object, export_ue/unity/godot,

@@ -1,5 +1,8 @@
 # .gitignore for Terminalia
 __pycache__/
+.codex-task.md
+codex-run.log
+*.plan.md.bak
 *.pyc
 .venv/
 *.egg-info/
