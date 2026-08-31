@@ -24,8 +24,8 @@ def camera_keyframes(world: dict, n: int = 8, height_m: float = 25.0) -> list[di
         # auto: circle the layout centroid
         objs = world.get("layout", {}).get("objects", [])
         if objs:
-            cx = sum(o["pos_xy"][0] for o in objs.values()) / len(objs) * mpp
-            cy = sum(o["pos_xy"][1] for o in objs.values()) / len(objs) * mpp
+            cx = sum(o["pos_xy"][0] for o in objs) / len(objs) * mpp
+            cy = sum(o["pos_xy"][1] for o in objs) / len(objs) * mpp
         else:
             cx = cy = world.get("spec", {}).get("size_hectares", 100) * 50
         import math
