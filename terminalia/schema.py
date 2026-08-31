@@ -31,6 +31,18 @@ class Terrain(BaseModel):
     max_height_m: float = 250.0
 
 
+class InstancePose(BaseModel):
+    frame: int
+    translation: tuple[float, float, float]
+    rotation_xyzw: tuple[float, float, float, float]
+
+
+class Physics(BaseModel):
+    urdf: str | None = None
+    mass_kg: float | None = None
+    static: bool = False
+
+
 class PlacedObject(BaseModel):
     id: str
     asset: str  # key into assets
@@ -40,6 +52,8 @@ class PlacedObject(BaseModel):
     z_offset: float = 0.0
     contact_ratio: float = 0.0  # from placement search
     role: Literal["hero", "prop", "foliage", "terrain_feature"] = "prop"
+    poses: list[InstancePose] = Field(default_factory=list)
+    physics: Physics | None = None
 
 
 class Layout(BaseModel):
@@ -54,6 +68,18 @@ class AssetEntry(BaseModel):
     tris: int = 0
     source_preset: str = "1024_cascade"
     bbox_size: tuple[float, float, float] | None = None
+
+
+class ModelRef(BaseModel):
+    name: str
+    version: str
+    license: str
+
+
+class VideoProvenance(BaseModel):
+    source_sha256: str
+    consent_note: str
+    models: list[ModelRef]
 
 
 class CameraPath(BaseModel):
@@ -74,6 +100,7 @@ class World(BaseModel):
     assets: dict[str, AssetEntry] = Field(default_factory=dict)
     camera: CameraPath = Field(default_factory=CameraPath)
     history: list[HistoryEntry] = Field(default_factory=list)
+    video_provenance: VideoProvenance | None = None
 
     def save(self, path: str) -> None:
         import json

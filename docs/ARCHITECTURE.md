@@ -12,6 +12,7 @@ terminalia/            python package
 ├── terrain.py         procedural heightfield engine + operator programs
 ├── layout.py          flat-area scoring, region-masked site selection
 ├── assets.py          concept image → TRELLIS.2 PBR GLB via ComfyUI
+├── ingest.py          fail-closed video → instance meshes + pose tracks
 ├── place.py           contact-ratio placement search + collision pass
 ├── backends.py        compute routing: local / Comfy Cloud / RunPod / custom
 ├── video.py           flythroughs, character lock, face swap, repo integrations
@@ -24,6 +25,10 @@ workflows/             ComfyUI workflow templates used by assets.py
 ```
 
 ## The two most important flows
+
+An alternate input flow runs `VIDEO INGEST` (safety → decomposition → meshes →
+poses) into `world.json`, then rejoins the generated-world pipeline at PLACE /
+EXPORT. Model execution uses the same backend and GPU-profile routing.
 
 ### Flow 1 — World generation (`python -m terminalia generate`)
 

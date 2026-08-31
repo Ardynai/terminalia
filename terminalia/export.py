@@ -14,7 +14,8 @@ def export_glb_bundle(world_dir: str, world: dict, out_name: str = "world") -> s
     out_dir = os.path.join(world_dir, "export", "gltf")
     os.makedirs(out_dir, exist_ok=True)
     manifest = []
-    for oid, obj in world.get("layout", {}).get("objects", []).items():
+    for obj in world.get("layout", {}).get("objects", []):
+        oid = obj["id"]
         asset_key = obj.get("asset")
         entry = world.get("assets", {}).get(asset_key)
         if not entry:
@@ -26,18 +27,18 @@ def export_glb_bundle(world_dir: str, world: dict, out_name: str = "world") -> s
             manifest.append({
                 "id": oid,
                 "file": f"{oid}.glb",
-                "position": [obj["pos_xy"][0], 0, obj["pos_xy"][1]],
+                "position": [obj["pos_xy"][0], obj.get("z_offset", 0), obj["pos_xy"][1]],
                 "rotation_z_deg": obj.get("rot_z", 0.0),
                 "scale": obj.get("scale", 1.0),
                 "role": obj.get("role", "prop"),
             })
-    hm_src = world.get("terrain", {}).get("heightmap")
+    terrain = world.get("terrain") or {}
+    hm_src = terrain.get("heightmap")
     if hm_src and os.path.exists(os.path.join(world_dir, hm_src)):
         shutil_copy(os.path.join(world_dir, hm_src),
                     os.path.join(out_dir, "heightmap.png"))
         manifest.append({"id": "_terrain_heightmap", "file": "heightmap.png",
-                         "meters_per_pixel": world.get("terrain", {}).get(
-                             "meters_per_pixel", 2.0)})
+                         "meters_per_pixel": terrain.get("meters_per_pixel", 2.0)})
     with open(os.path.join(out_dir, "manifest.json"), "w") as f:
         json.dump({"world": world.get("spec", {}).get("prompt", ""),
                    "objects": manifest}, f, indent=1)
@@ -60,7 +61,8 @@ def write_ue_import_script(world_dir: str, world: dict,
     os.makedirs(out_dir, exist_ok=True)
 
     objects = []
-    for oid, obj in world.get("layout", {}).get("objects", []).items():
+    for obj in world.get("layout", {}).get("objects", []):
+        oid = obj["id"]
         asset_key = obj.get("asset")
         entry = world.get("assets", {}).get(asset_key)
         if not entry:
@@ -146,7 +148,8 @@ def write_unity_editor_script(world_dir: str, world: dict) -> str:
     out_dir = os.path.join(world_dir, "export", "unity")
     os.makedirs(out_dir, exist_ok=True)
     objs = []
-    for oid, obj in world.get("layout", {}).get("objects", []).items():
+    for obj in world.get("layout", {}).get("objects", []):
+        oid = obj["id"]
         asset_key = obj.get("asset")
         entry = world.get("assets", {}).get(asset_key)
         if not entry:
@@ -198,7 +201,8 @@ def write_godot_scene(world_dir: str, world: dict) -> str:
     os.makedirs(out_dir, exist_ok=True)
     lines = ["[gd_scene format=3]", "", "[node name=\"TerminaliaWorld\" type=\"Node3D\"]"]
     n = 0
-    for oid, obj in world.get("layout", {}).get("objects", []).items():
+    for obj in world.get("layout", {}).get("objects", []):
+        oid = obj["id"]
         asset_key = obj.get("asset")
         entry = world.get("assets", {}).get(asset_key)
         if not entry:
