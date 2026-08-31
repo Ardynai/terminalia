@@ -1,0 +1,14 @@
+Terminalia third-party notices
+===============================
+
+FixAnything
+-----------
+Terminalia can invoke FixAnything at runtime to refine rendered videos.
+Authors: Khiem Vuong, Deva Ramanan, and Srinivasa Narasimhan.
+Source: https://github.com/kvuong2711/fix-anything
+Model: https://huggingface.co/kvuong2711/fix-anything
+License: Apache License 2.0
+
+The integration pins the FixAnything LoRA and Wan2.1 base-model revisions.
+Neither model weights nor FixAnything source code are redistributed here;
+the configured compute backend fetches them at runtime.
