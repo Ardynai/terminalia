@@ -89,10 +89,11 @@ full decode) → 128GB (max steps, bf16 video). See
 ## Status & honesty
 
 `v0.2` — terrain engine, placement search, asset bindings, layout selection,
-engine exporters, backend-routed Wan2.1/LTX-2 flythrough execution, and the
-optional FixAnything refinement adapter are implemented and stub-backend
-tested. The Blender refine loop and heavyweight Wan/FixAnything/LTX inference
-are not run in CI. The README will always say exactly this much.
+engine exporters, backend-routed Wan2.1/LTX-2 flythrough execution, the commercial-model
+video reconstruction adapter, and the optional FixAnything refinement adapter are
+implemented and stub-backend tested. The Blender refine loop and real
+Wan/FixAnything/LTX/reconstruction model execution are not end-to-end tested in-repo.
+The README will always say exactly this much.
 
 ## License
 
@@ -129,7 +130,7 @@ Comfy Cloud or a rental box.
 | 4× upscaling | 4x-UltraSharp, 4x_NMKD-Siax | ✅ |
 | Style/character LoRA training | ai-toolkit (GUI at :8670, CLI configs in `config/examples/`) | ✅ |
 | Video → frames | VHS_LoadVideo → SaveImage | ✅ verified |
-| Semantic segmentation | SAM3 detect/track nodes | ✅ |
+| Video scene reconstruction | SAM 2 → TRELLIS.2 → FoundationPose (NGC) | ✅ adapter + mock; runtime models required |
 
 LoRA workflow: train a world-style or character LoRA in ai-toolkit
 (`ui` GUI or `config/examples/train_lora_chroma_24gb.yaml` as template) →

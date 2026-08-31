@@ -5,6 +5,7 @@ import hashlib
 from pathlib import Path
 
 from .backends import Backend, GpuProfile
+from .reconstruction import build_reconstruction_workflow
 from .schema import (
     AssetEntry, InstancePose, ModelRef, Physics, PlacedObject, VideoProvenance,
     World, WorldSpec,
@@ -69,15 +70,16 @@ def ingest_video(request: dict, backend: Backend, profile: GpuProfile) -> dict:
     except Exception as exc:
         raise RuntimeError("safety verdict omitted valid model provenance") from exc
 
-    scene = _run(backend, {
-        "terminalia_task": "video_scene_reconstruction",
+    scene_request = {
         "video_path": str(path),
         "source_sha256": source_hash,
         "seed": seed,
         "gpu_profile": profile.name,
         "mesh_preset": profile.mesh_preset,
         "output_dir": request.get("output_dir"),
-    }, f"terminalia-ingest-{job_id}")
+    }
+    scene = _run(backend, build_reconstruction_workflow(scene_request, profile),
+                 f"terminalia-ingest-{job_id}")
     instances = scene.get("instances")
     if not isinstance(instances, list) or not instances:
         raise RuntimeError("scene reconstruction returned no instances")
